@@ -6,7 +6,7 @@ import "@/styles/app.css";
 
 useMetadata.setGlobalDefaults({
   title: getTitle("Home"),
-  description: "Demo showcasing Vike and Solid.",
+  description: "Demo showcasing Squirrely.",
 });
 
 export default function RootLayout(props: FlowProps) {

@@ -1,7 +1,5 @@
 import getTitle from "@/utils/get-title";
-import json5 from "json5";
 import { createSignal, For, onMount } from "solid-js";
-import { render } from "squirrelly";
 import { useMetadata } from "vike-metadata-solid";
 
 const TEMPLATE_EXAMPLES = [
@@ -34,6 +32,23 @@ const TEMPLATE_EXAMPLES = [
 ];
 
 export default function Page() {
+  let json5: any;
+  let render: (template: any, data: any) => string = () => "";
+
+  onMount(async () => {
+    const _json5 = await import("json5");
+    // @ts-ignore (I specifically use the browser/squirrelly.min.js build because I'm running this on the browser + es.js and cjs.js use require("fs") so that's bad).
+    const _sqrl = await import("squirrelly/dist/browser/squirrelly.min.js");
+    json5 = _json5.default;
+    render = _sqrl.render;
+
+    const initialExample = TEMPLATE_EXAMPLES[0];
+    setTemplate(initialExample.template);
+    setDataString(initialExample.data);
+    setTimeout(() => {
+      handleRender();
+    }, 400);
+  });
   useMetadata({
     title: getTitle("Demo"),
   });
@@ -50,23 +65,18 @@ export default function Page() {
 
   const handleRender = () => {
     try {
+      console.log("clicked.1", json5);
       const data = json5.parse(dataString());
+      console.log("data", data);
       const rendered = render(template(), data);
+      console.log("rendered", rendered);
       setResult(rendered);
+      console.log("clicked.2");
       return rendered;
     } catch (e: any) {
       return `Error: ${e.message}`;
     }
   };
-
-  onMount(() => {
-    const initialExample = TEMPLATE_EXAMPLES[0];
-    setTemplate(initialExample.template);
-    setDataString(initialExample.data);
-    setTimeout(() => {
-      handleRender();
-    }, 400);
-  });
 
   return (
     <>
