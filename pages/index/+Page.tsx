@@ -1,6 +1,6 @@
 import getTitle from "@/utils/get-title";
 import json5 from "json5";
-import { createMemo, createSignal, For } from "solid-js";
+import { createSignal, For, onMount } from "solid-js";
 import { render } from "squirrelly";
 import { useMetadata } from "vike-metadata-solid";
 
@@ -38,20 +38,9 @@ export default function Page() {
     title: getTitle("Demo"),
   });
 
-  const [template, setTemplate] = createSignal<string>(
-    "My favorite template engine is {{it.favorite}}."
-  );
+  const [template, setTemplate] = createSignal<string>("");
   const [dataString, setDataString] = createSignal<string>("{favorite: 'Squirrelly'}");
   const [result, setResult] = createSignal<string>("");
-
-  const renderedResult = createMemo(() => {
-    try {
-      const data = json5.parse(dataString());
-      return render(template(), data);
-    } catch (e: any) {
-      return `Error: ${e.message}`;
-    }
-  });
 
   const handleExampleChange = (e: any) => {
     const selectedExample = TEMPLATE_EXAMPLES[e.target.value];
@@ -60,8 +49,24 @@ export default function Page() {
   };
 
   const handleRender = () => {
-    setResult(renderedResult());
+    try {
+      const data = json5.parse(dataString());
+      const rendered = render(template(), data);
+      setResult(rendered);
+      return rendered;
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
   };
+
+  onMount(() => {
+    const initialExample = TEMPLATE_EXAMPLES[0];
+    setTemplate(initialExample.template);
+    setDataString(initialExample.data);
+    setTimeout(() => {
+      handleRender();
+    }, 400);
+  });
 
   return (
     <>
