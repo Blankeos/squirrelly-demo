@@ -6,5 +6,8 @@ import type { Config } from "vike/types";
 export default {
   extends: [config, vikeServer],
   server: "server.ts",
-  ssr: false,
+  prerender: {
+    enable: true,
+    keepDistServer: false,
+  },
 } satisfies Config;
