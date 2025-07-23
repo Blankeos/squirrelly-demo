@@ -17,12 +17,13 @@ const TEMPLATE_EXAMPLES = [
   },
   {
     label: "Simple Math",
-    template: "2 + 2 = {{it.sum}}",
+    template: "2 + 2 = {{it.sum * 2 / 2}}",
     data: "{ sum: 4 }",
   },
   {
     label: "Conditional",
-    template: "{{@if(it.maritalStatus === 'married')}}\nMarried\n{{#else}}\nSingle\n{{/if}}",
+    template:
+      "{{@if(it.maritalStatus === 'single')}}\nSingle\n{{#elif(it.maritalStatus === 'married')}}\nMarried\n{{#else}}\nUnknown\n{{/if}}",
     data: "{ maritalStatus: 'married' }",
   },
   {
@@ -46,7 +47,6 @@ export default function Page() {
   const renderedResult = createMemo(() => {
     try {
       const data = json5.parse(dataString());
-      console.log(data, "is data");
       return render(template(), data);
     } catch (e: any) {
       return `Error: ${e.message}`;
