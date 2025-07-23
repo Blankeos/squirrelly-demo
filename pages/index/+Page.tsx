@@ -82,7 +82,7 @@ export default function Page() {
     <>
       <div class="flex flex-col gap-5 items-center h-screen bg-gray-50 ">
         <div class="w-full space-y-4 px-5 text-center py-5">
-          <h1 class="text-3xl font-bold text-gray-800">Squirrelly Demos</h1>
+          <h1 class="text-3xl font-bold text-gray-800">Squirrelly Demos!</h1>
           <p class="text-gray-600">
             The fastest way to learn Squirrelly with interactive examples!
           </p>
