@@ -35,7 +35,7 @@ const TEMPLATE_EXAMPLES = [
 
 export default function Page() {
   useMetadata({
-    title: getTitle("Home"),
+    title: getTitle("Demo"),
   });
 
   const [template, setTemplate] = createSignal<string>(
