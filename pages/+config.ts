@@ -8,6 +8,6 @@ export default {
   server: "server.ts",
   prerender: {
     enable: true,
-    keepDistServer: false,
+    keepDistServer: true,
   },
 } satisfies Config;
